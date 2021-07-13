@@ -269,12 +269,6 @@
 <row name="description" null="1" autoincrement="0">
 <datatype>CHAR</datatype>
 <default>NULL</default></row>
-<row name="start_date" null="1" autoincrement="0">
-<datatype>DATE</datatype>
-<default>NULL</default></row>
-<row name="end_date" null="1" autoincrement="0">
-<datatype>DATE</datatype>
-<default>NULL</default></row>
 <row name="created_at" null="1" autoincrement="0">
 <datatype>TIMESTAMP</datatype>
 <default>NULL</default></row>
@@ -322,7 +316,7 @@
 <row name="inactive_duration" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="repetition" null="1" autoincrement="0">
+<row name="number_repetition" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="created_at" null="1" autoincrement="0">
