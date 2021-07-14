@@ -16,5 +16,16 @@ $ python manage.py startapp <app_name>
 $ python manage.py runserver
 - If error, check if the url in the browser matches a declared url in the root url.py
 
-# Setup the database
+# Setup the database and create models
+
+## Setup the database
+
+- In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
+- Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
+$ python manage.py migrate
+
+## Create models
+
+- Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
+<app_name>.app.<app_class_name>
 
