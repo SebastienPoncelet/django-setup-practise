@@ -26,6 +26,10 @@ $ python manage.py migrate
 
 ## Create models
 
+- Create models
+    _ Pay attention to each model's class name
+    _ For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
+- Run migrations once all the models are created:
+$ python3 manage.py makemigrations polls
 - Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
 <app_name>.app.<app_class_name>
-
