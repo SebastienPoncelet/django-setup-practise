@@ -2,9 +2,9 @@ from django.db import models
 from .season import *
 from .cycle import *
 
-class Country(models.Model):
-    season = models.OneToOneField(Season, null=True, on_delete=models.CASCADE, related_name='country')
-    cycle = models.OneToOneField(Cycle, null=True, on_delete=models.CASCADE, related_name='country')
+class Availability(models.Model):
+    season = models.OneToOneField(Season, null=True, on_delete=models.CASCADE, related_name='availability')
+    cycle = models.OneToOneField(Cycle, null=True, on_delete=models.CASCADE, related_name='availability')
     is_active = models.BooleanField()
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
