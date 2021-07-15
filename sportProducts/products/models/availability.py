@@ -2,10 +2,9 @@ from django.db import models
 from .season import *
 from .cycle import *
 
-# TODO: Check if it's necessary to add updated_at and created_at fields
 class Country(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    cycle = models.ForeignKey(Cycle, on_delete=models.CASCADE)
+    season = models.OneToOneField(Season, null=True, on_delete=models.CASCADE, related_name='country')
+    cycle = models.OneToOneField(Cycle, null=True, on_delete=models.CASCADE, related_name='country')
     is_active = models.BooleanField()
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=200)
