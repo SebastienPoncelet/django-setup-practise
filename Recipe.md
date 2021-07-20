@@ -35,6 +35,6 @@ $ python3 manage.py makemigrations <app_name>
 '<app_name>.app.<app_class_name>'
 - Check the SQL a specific migration would make:
 $ python3 manage.py sqlmigrate <app_name> <migration_number>
-- If it looks correct then run this command to apply all missing migrations in the DB:
+- If it looks correct then run this command to apply all missing migrations, all changes, in the DB:
 $ python3 manage.py migrate
 This command is to be used when models are modified without losing data
