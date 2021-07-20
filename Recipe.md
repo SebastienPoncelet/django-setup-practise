@@ -38,3 +38,11 @@ $ python3 manage.py sqlmigrate <app_name> <migration_number>
 - If it looks correct then run this command to apply all missing migrations, all changes, in the DB:
 $ python3 manage.py migrate
 This command is to be used when models are modified without losing data
+
+# Setup the Django admin system
+- Create a super user:
+$ python3 manage.py createsuperuser
+- Access to Django's admin panel by entering the following URL in the browser:
+<domain>/admin/
+- Register model objects to tell the admin it has an admin interface. File to update:
+<app_name>/admin.py
