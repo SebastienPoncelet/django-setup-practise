@@ -46,3 +46,36 @@ $ python3 manage.py createsuperuser
 <domain>/admin/
 - Register model objects to tell the admin it has an admin interface. File to update:
 <app_name>/admin.py
+
+# Setup the database and create models
+
+## Prerequesite setup
+
+- Use a virtual environment to make sure that the package configuration is kept nicely isolated from any other projects.
+Sources:
+https://www.django-rest-framework.org/tutorial/1-serialization/
+https://stackoverflow.com/questions/1534210/use-different-python-version-with-virtualenv/39713544#39713544
+https://docs.python.org/3/library/venv.html
+- Create the environment in python 3 with the following command:
+$ python3 -m venv <env_name>
+- Define the path where to activate the virtual environment:
+$ source <env_name>/<path_to_environment>
+example:
+$ source env/bin/activate
+(activate is created)
+- Install Django Rest Framework in the virtual environment:
+$ pip3 install djangorestframework
+- Add the rest_framework app to INSTALLED_APPS in the <app_name>/settings.py file.
+
+## Create views
+- If using class based views and ViewSets, 1 view <--> 1 model.
+
+## Create serializers
+- Use ModelSerializer to keep the code concise.
+
+
+
+
+# Typical errors
+-  Indentation Error: unindent does not match any outer indentation level
+--> there's a mix of tabs and spaces somewhere in the file.
