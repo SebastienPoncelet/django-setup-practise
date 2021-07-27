@@ -27,8 +27,8 @@ $ python manage.py migrate
 ## Create models
 
 - Create models
-    _ Pay attention to each model's class name
-    _ For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
+    - Pay attention to each model's class name
+    - For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
 - Create migrations for the changes once all the models are created:
 $ python3 manage.py makemigrations <app_name>
 - Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
@@ -47,7 +47,7 @@ $ python3 manage.py createsuperuser
 - Register model objects to tell the admin it has an admin interface. File to update:
 <app_name>/admin.py
 
-# Setup the database and create models
+# Create the views (controllers) and the serializers (views/templates)
 
 ## Prerequesite setup
 
@@ -63,19 +63,27 @@ $ source <env_name>/<path_to_environment>
 example:
 $ source env/bin/activate
 (activate is created)
+- Deactivate the virtual environment with:
+$ deactivate
 - Install Django Rest Framework in the virtual environment:
 $ pip3 install djangorestframework
 - Add the rest_framework app to INSTALLED_APPS in the <app_name>/settings.py file.
 
 ## Create views
+- If views are split in multiple files:
+    - Create a <views> folder.
+    - Create 1 view file per view.
+    - Import all view files in <site_name>/<app_name>/views/__init__.py
 - If using class based views and ViewSets, 1 view <--> 1 model.
 
 ## Create serializers
 - Use ModelSerializer to keep the code concise.
 
 
+## Setup the corresponding urls
+- Register a view in the <site_name>/<app_name>/urls.py
 
 
 # Typical errors
--  Indentation Error: unindent does not match any outer indentation level
+-  'Indentation Error: unindent does not match any outer indentation level'
 --> there's a mix of tabs and spaces somewhere in the file.
