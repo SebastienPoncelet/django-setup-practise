@@ -29,6 +29,7 @@ $ python manage.py migrate
 - Create models
     - Pay attention to each model's class name
     - For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
+    - Do not forget to declare any on delete cascade for children model fields in parent models.
 - Create migrations for the changes once all the models are created:
 $ python3 manage.py makemigrations <app_name>
 - Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
@@ -78,6 +79,9 @@ $ pip3 install djangorestframework
 
 ## Create serializers
 - Use ModelSerializer to keep the code concise.
+- If using class based views and ViewSets:
+    - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
+    - 1 url <--> 1 ViewSets for all CRUD endpoints.
 
 
 ## Setup the corresponding urls

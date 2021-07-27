@@ -10,6 +10,7 @@ class ColourSerializer(serializers.ModelSerializer):
   class Meta:
     model = Colour
     fields = [
+      'id',
       'name',
       'rgb_code',
       'description',

@@ -6,6 +6,8 @@ from .views import *
 
 router = routers.DefaultRouter()
 router.register(r'colours', ColourViewSet)
+router.register(r'seasons', SeasonViewSet)
+router.register(r'countries', CountryViewSet)
 
 urlpatterns = [
     path(r'', include(router.urls))
