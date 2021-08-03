@@ -9,4 +9,4 @@ class Season(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "{}".format(self.name)
+        return "{} {}".format(self.name, self.description)

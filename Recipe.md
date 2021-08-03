@@ -91,3 +91,4 @@ $ pip3 install djangorestframework
 # Typical errors
 -  'Indentation Error: unindent does not match any outer indentation level'
 --> there's a mix of tabs and spaces somewhere in the file.
+- Create the __str__() model instance method to help identify entities more easily.
