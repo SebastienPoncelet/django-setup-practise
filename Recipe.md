@@ -91,3 +91,14 @@ $ pip3 install djangorestframework
 # Typical errors
 -  'Indentation Error: unindent does not match any outer indentation level'
 --> there's a mix of tabs and spaces somewhere in the file.
+
+
+#TODO
+- Complete creating serializers and views (test creating nested objects in same request)
+- Setup the user model with Django's authentication.
+- Setup the Django Rest framework JWT authentication.
+- Create unit tests.
+- Create permissions based on user access and HTTP request type (GET, POST etc.).
+- Create proper DB with either PostgreSQL or MySQL according to Django's documentation.
+- Create a server to host this project (nginx?) or host on Heroku for practise.
+- Setup Docker.
