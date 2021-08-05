@@ -59,6 +59,7 @@ https://stackoverflow.com/questions/1534210/use-different-python-version-with-vi
 https://docs.python.org/3/library/venv.html
 - Create the environment in python 3 with the following command:
 $ python3 -m venv <env_name>
+The environment will be created at the project's root.
 - Define the path where to activate the virtual environment:
 $ source <env_name>/<path_to_environment>
 example:
@@ -72,16 +73,16 @@ $ pip3 install djangorestframework
 
 ## Create views
 - If views are split in multiple files:
-    - Create a <views> folder.
-    - Create 1 view file per view.
-    - Import all view files in <site_name>/<app_name>/views/__init__.py
+  - Create a <views> folder.
+  - Create 1 view file per view.
+  - Import all view files in <site_name>/<app_name>/views/__init__.py
 - If using class based views and ViewSets, 1 view <--> 1 model.
 
 ## Create serializers
 - Use ModelSerializer to keep the code concise.
 - If using class based views and ViewSets:
-    - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
-    - 1 url <--> 1 ViewSets for all CRUD endpoints.
+  - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
+  - 1 url <--> 1 ViewSets for all CRUD endpoints.
 
 
 ## Setup the corresponding urls
@@ -93,6 +94,16 @@ $ pip3 install djangorestframework
 --> there's a mix of tabs and spaces somewhere in the file.
 - Create the __str__() model instance method to help identify entities more easily.
 
+# Testing
+- For simple apps, create tests in the <site_name>/<app_name>/tests.py file.
+- For more complex apps, better to create a folder and multiple test files to separate
+everything cleanly, such as:
+  - Create folder <site_name>/<app_name>/tests
+  - Create test files as needed test_<whatever is being tested> like test_models.py.
+  - Don't forget the __init__.py file in the forlder to tell Python that the folder
+  is a package (keep it empty).
+- Launch the test with:
+$ python3 manage.py test
 
 #TODO
 - Complete creating serializers and views (test creating nested objects in same request)
