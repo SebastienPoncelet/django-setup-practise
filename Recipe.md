@@ -1,30 +1,46 @@
 
 # Setup Django and project
 
-- Check Django version
 - Create project:
 $ django-admin startproject <site_name>
-- Create/choose virtual environment
+- Create/choose virtual environment following 3.a steps:
+- Check Django version.
 - Check project is created properly by running the server:
 $ python3 manage.py runserver
+- Select virtual environment in VS code's interpreter:
+https://stackoverflow.com/questions/53007637/e0401unable-to-import-django-db
 - Create app:
 $ python3 manage.py startapp <app_name>
-- Create simple view
+- Add app to project's settings.py 'INSTALLED_APPS' array.
+'<app_name>.apps.<AppNameConfig>'
+where <AppNameConfig> is the class name in the <app_name> apps.py.
+- Check project is created properly by running the server:
+$ python3 manage.py runserver
+- Create models according to section 1.
+- Create super user for django admin:
+$ python manage.py createsuperuser
+- Register models in <app_name> admin.py to allow admin interface. 
+- Install and setup JWT according to section 5.
+- Create views according to section 3.
 - Declare url in app's URLconf
 - Import URLconf in root urls.py
 - Check if there are any issues by running the server:
 $ python3 manage.py runserver
 - If error, check if the url in the browser matches a declared url in the root url.py
 
-# Setup the database and create models
+# 1 Setup the database and create models
 
-## Setup the database
+## a Setup the database
 
 - In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
+- Indicate changes to models:
+$ python manage.py makemigrations
+- Run migrations:
+$ python manage.py sqlmigrate <app_name> <migration_number>
 - Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
 $ python manage.py migrate
 
-## Create models
+## b Create models
 
 - Create models
     - Pay attention to each model's class name
@@ -40,7 +56,11 @@ $ python3 manage.py sqlmigrate <app_name> <migration_number>
 $ python3 manage.py migrate
 This command is to be used when models are modified without losing data
 
-# Setup the Django admin system
+## c If using Django's auth user model
+- Don't forget to declare your User model in the settings as:
+$ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
+
+# 2 Setup the Django admin system
 - Create a super user:
 $ python3 manage.py createsuperuser
 - Access to Django's admin panel by entering the following URL in the browser:
@@ -48,9 +68,9 @@ $ python3 manage.py createsuperuser
 - Register model objects to tell the admin it has an admin interface. File to update:
 <app_name>/admin.py
 
-# Create the views (controllers) and the serializers (views/templates)
+# 3 Create the views (controllers) and the serializers (views/templates)
 
-## Prerequesite setup
+## a Prerequesite setup
 
 - Use a virtual environment to make sure that the package configuration is kept nicely isolated from any other projects.
 Sources:
@@ -66,29 +86,31 @@ $ source env/bin/activate
 (activate is created)
 - Deactivate the virtual environment with:
 $ deactivate
+- Install Django in newly created virtual environment if necessary.
+$ pip3 install Django
 - Install Django Rest Framework in the virtual environment:
 $ pip3 install djangorestframework
 - Add the rest_framework app to INSTALLED_APPS in the <app_name>/settings.py file.
 
-## Create views
+## b Create views
 - If views are split in multiple files:
     - Create a <views> folder.
     - Create 1 view file per view.
     - Import all view files in <site_name>/<app_name>/views/__init__.py
 - If using class based views and ViewSets, 1 view <--> 1 model.
 
-## Create serializers
+## c Create serializers
 - Use ModelSerializer to keep the code concise.
 - If using class based views and ViewSets:
     - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
     - 1 url <--> 1 ViewSets for all CRUD endpoints.
 
 
-## Setup the corresponding urls
+## d Setup the corresponding urls
 - Register a view in the <site_name>/<app_name>/urls.py
 
 
-# Typical errors
+# 4 Typical errors
 -  'Indentation Error: unindent does not match any outer indentation level'
 --> there's a mix of tabs and spaces somewhere in the file.
 - Create the __str__() model instance method to help identify entities more easily.
@@ -103,3 +125,17 @@ $ pip3 install djangorestframework
 - Create proper DB with either PostgreSQL or MySQL according to Django's documentation.
 - Create a server to host this project (nginx?) or host on Heroku for practise.
 - Setup Docker.
+
+# 5 Authentication Token
+- Can use djangorestframework-simplejwt librairy as it's popular and regularly updated:
+https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
+https://github.com/jazzband/djangorestframework-simplejwt
+- Install in virtual environment:
+$ pip3 install djangorestframework-simplejwt
+- Add this librairy in the settings.py file by adding this whole section:
+```REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+```
