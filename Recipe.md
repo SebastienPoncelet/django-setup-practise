@@ -18,7 +18,7 @@ where <AppNameConfig> is the class name in the <app_name> apps.py.
 $ python3 manage.py runserver
 - Create models according to section 1.
 - Create super user for django admin:
-$ python manage.py createsuperuser
+$ python3 manage.py createsuperuser
 - Register models in <app_name> admin.py to allow admin interface. 
 - Install and setup JWT according to section 5.
 - Create views according to section 3.
@@ -34,11 +34,14 @@ $ python3 manage.py runserver
 
 - In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
 - Indicate changes to models:
-$ python manage.py makemigrations
+$ python3 manage.py makemigrations
 - Run migrations:
-$ python manage.py sqlmigrate <app_name> <migration_number>
+$ python3 manage.py sqlmigrate <app_name> <migration_number>
 - Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
-$ python manage.py migrate
+$ python3 manage.py migrate
+- Create fixtures according to step 1.d
+- Enter the following command to populate the database:
+$ python3 manage.py loaddata <fixture_file_name.extension>
 
 ## b Create models
 
@@ -60,6 +63,11 @@ This command is to be used when models are modified without losing data
 - Don't forget to declare your User model in the settings as:
 $ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
 
+## d Creating fixtures
+- Create the corresponding folder and file:
+<site_name>/<app_name>/fixtures/database.json
+- Can create separate fixture files to make modifications easier to handle at:
+<site_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
 # 2 Setup the Django admin system
 - Create a super user:
 $ python3 manage.py createsuperuser
@@ -114,6 +122,8 @@ $ pip3 install djangorestframework
 -  'Indentation Error: unindent does not match any outer indentation level'
 --> there's a mix of tabs and spaces somewhere in the file.
 - Create the __str__() model instance method to help identify entities more easily.
+- If the fixtures have been changed, then delete the local database or loading the fixtures will create
+unique constraint issues, trying to create objects with id numbers that already exist.
 
 
 #TODO
