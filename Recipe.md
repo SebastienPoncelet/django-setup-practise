@@ -186,3 +186,9 @@ $ django-admin makemessages --all --ignore=env
 - Once translations have been provided in the .po files, compile with the following command:
 $ django-admin compilemessages --ignore=env
 - Before running 
+
+# 7 Unit test
+- Install coverage with following command:
+$ pip3 install coverage
+- Run tests at level 2 with following command:
+coverage run manage.py test <app_name> -v 2
