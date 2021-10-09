@@ -40,8 +40,11 @@ $ python3 manage.py sqlmigrate <app_name> <migration_number>
 - Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
 $ python3 manage.py migrate
 - Create fixtures according to step 1.d
-- Enter the following command to populate the database:
-$ python3 manage.py loaddata <fixture_file_name.extension>
+<!-- - Enter the following command to populate the database:
+$ python3 manage.py loaddata <fixture_file_name.extension> -->
+- Create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
+https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
+$ python3 manage.py <new_command_file_name_no_extension>
 
 ## b Create models
 
@@ -90,7 +93,7 @@ $ python3 -m venv <env_name>
 - Define the path where to activate the virtual environment:
 $ source <env_name>/<path_to_environment>
 example:
-$ source env/bin/activate
+$ source <env_name>/bin/activate
 (activate is created)
 - Deactivate the virtual environment with:
 $ deactivate
@@ -149,3 +152,43 @@ $ pip3 install djangorestframework-simplejwt
     ),
 }
 ```
+
+# 6 Multi Language
+- Check that the following has been installed:
+$ brew install gettext
+$ brew link --force gettext
+- In settings.py modify the 'LANGUAGE_CODE' to a generic one like 'en'.
+- Import 'gettext_lazy' in settings.py like this:
+from django.utils.translation import gettext_lazy as _
+- If only a few supported languages are required, then specify them in the settings.py as follows,
+otherwise all supported languages will be imported by Django:
+LANGUAGES = (
+    ('en', _('English')),
+    ('<language_code>', _('<language_name>'))
+)
+- In settings.py 'MIDDLEWARE' add the corresponding middlewar in this order to user session data and
+resolve the requested URL with the active language:
+MIDDLEWARE = [
+'django.contrib.sessions.middleware.SessionMiddleware',
+'django.middleware.locale.LocaleMiddleware', # new
+'django.middleware.common.CommonMiddleware',
+]
+- In settings.py define the path for locale files, at the project's root (using name 'locale' can be problematic):
+LOCALE_PATHS = [
+    BASE_DIR / 'locale/',
+]
+- Create the following folders at the 'LOCAL_PATHS' corresponding path (using name 'locale' can be problematic):
+<project_root>/locale/<language_code_1>
+<project_root>/locale/<language_code_2>
+etc.
+- Create a .po message file for each language
+$ django-admin makemessages --all --ignore=env
+- Once translations have been provided in the .po files, compile with the following command:
+$ django-admin compilemessages --ignore=env
+- Before running 
+
+# 7 Unit test
+- Install coverage with following command:
+$ pip3 install coverage
+- Run tests at level 2 with following command:
+coverage run manage.py test <app_name> -v 2
