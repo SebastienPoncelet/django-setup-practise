@@ -46,9 +46,9 @@ $ python3 manage.py loaddata <fixture_file_name.extension>
 ## b Create models
 
 - Create models
-    - Pay attention to each model's class name
-    - For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
-    - Do not forget to declare any on delete cascade for children model fields in parent models.
+- Pay attention to each model's class name
+- For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
+- Do not forget to declare any on delete cascade for children model fields in parent models.
 - Create migrations for the changes once all the models are created:
 $ python3 manage.py makemigrations <app_name>
 - Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
