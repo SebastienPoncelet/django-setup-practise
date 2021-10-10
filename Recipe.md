@@ -52,6 +52,8 @@ $ python3 manage.py <new_command_file_name_no_extension>
 - Pay attention to each model's class name
 - For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
 - Do not forget to declare any on delete cascade for children model fields in parent models.
+- Modify the settings.py 'AUTH_USER_MODEL' with the proper user group name:
+AUTH_USER_MODEL = '<app_name>.<customized_user_model_name>
 - Create migrations for the changes once all the models are created:
 $ python3 manage.py makemigrations <app_name>
 - Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
@@ -154,7 +156,7 @@ $ pip3 install djangorestframework-simplejwt
 ```
 
 # 6 Multi Language
-- Check that the following has been installed:
+- Check that the following has been installed (takes quite some time):
 $ brew install gettext
 $ brew link --force gettext
 - In settings.py modify the 'LANGUAGE_CODE' to a generic one like 'en'.
@@ -192,3 +194,15 @@ $ django-admin compilemessages --ignore=env
 $ pip3 install coverage
 - Run tests at level 2 with following command:
 coverage run manage.py test <app_name> -v 2
+
+# 8 Setup Docker
+- Get the list of packages for the application and save them in a 'requirements.txt' file:
+$ pip3 freeze > requirements.txt
+- Create Dockerfile in project's root.
+- Build image to download required packages with command:
+$ docker build --tag <image_wished_name> <directory_to_build>
+$ docker build --tag python-django-test .
+'.' designs the current directory
+- Run the image and publish, link local and container ports, with command:
+$ docker run --publish <local_port>:<container_port_from_Dockerfile> <tag_name_if_any>
+$ docker run --publish 8000:8000 python-django-test
