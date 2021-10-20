@@ -11,15 +11,15 @@ $ django-admin startproject <site_name>
 - Select virtual environment in VS code's interpreter:
 https://stackoverflow.com/questions/53007637/e0401unable-to-import-django-db
 - Create app:
-$ python3 manage.py startapp <app_name>
+`$ python3 manage.py startapp <app_name>`
 - Add app to project's settings.py 'INSTALLED_APPS' array.
 '<app_name>.apps.<AppNameConfig>'
 where <AppNameConfig> is the class name in the <app_name> apps.py.
 - Check project is created properly by running the server:
-$ python3 manage.py runserver
+`$ python3 manage.py runserver`
 - Migrate the DB for the first time according to section 3.
 - Create models according to section 2.
-- Register models in <app_name> admin.py to allow admin interface. 
+- Register models in <app_name> admin.py to allow admin interface.
 - Migrate the DB according to section 3.
 - Setup the django admin according to section 4.
 - Install and setup JWT according to section 5.
@@ -27,7 +27,7 @@ $ python3 manage.py runserver
 - Declare url in app's URLconf
 - Import URLconf in root urls.py
 - Check if there are any issues by running the server:
-$ python3 manage.py runserver
+`$ python3 manage.py runserver`
 - If error, check if the url in the browser matches a declared url in the root url.py
 
 
@@ -39,18 +39,18 @@ https://www.django-rest-framework.org/tutorial/1-serialization/
 https://stackoverflow.com/questions/1534210/use-different-python-version-with-virtualenv/39713544#39713544
 https://docs.python.org/3/library/venv.html
 - Create the environment in python 3 with the following command:
-$ python3 -m venv <env_name>
+`$ python3 -m venv <env_name>`
 - Define the path where to activate the virtual environment:
-$ source <env_name>/<path_to_environment>
+`$ source <env_name>/<path_to_environment>`
 example:
-$ source <env_name>/bin/activate
+`$ source <env_name>/bin/activate`
 (activate is created)
 - Deactivate the virtual environment with:
-$ deactivate
+`$ deactivate`
 - Install Django in newly created virtual environment if necessary.
-$ pip3 install Django
+`$ pip3 install Django`
 - Install Django Rest Framework in the virtual environment:
-$ pip3 install djangorestframework
+`$ pip3 install djangorestframework`
 - Add the 'rest_framework' app to INSTALLED_APPS in the <app_name>/settings.py file.
 
 # 2 Create models
@@ -61,27 +61,26 @@ $ pip3 install djangorestframework
 - Pay attention to each model's class name
 - For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
 - Do not forget to declare any on delete cascade for children model fields in parent models.
-- Modify the settings.py 'AUTH_USER_MODEL' with the proper user group name:
+- If a custom User model is created, modify the settings.py 'AUTH_USER_MODEL' with the proper user group name:
 AUTH_USER_MODEL = '<app_name>.<customized_user_model_name>
+- Import all model files in the 'models/__init.py__' file.
 - Create migrations for the changes once all the models are created:
-$ python3 manage.py makemigrations <app_name>
-- Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
-'<app_name>.app.<app_class_name>'
+`$ python3 manage.py makemigrations <app_name>`
 - Check the SQL a specific migration would make:
-$ python3 manage.py sqlmigrate <app_name> <migration_number>
+`$ python3 manage.py sqlmigrate <app_name> <migration_number>`
 - If it looks correct then run this command to apply all missing migrations, all changes, in the DB:
-$ python3 manage.py migrate
+`$ python3 manage.py migrate`
 This command is to be used when models are modified without losing data
 
-## b If using Django's auth user model
+## b If using custom User model
 - Don't forget to declare your User model in the settings as:
 $ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
 
 ## c Creating fixtures
 - Create the corresponding folder and file:
-<site_name>/<app_name>/fixtures/database.json
+<project_name>/<app_name>/fixtures/database.json
 - Can create separate fixture files to make modifications easier to handle at:
-<site_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
+<project_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
 
 
 # 3 Migrate the database
