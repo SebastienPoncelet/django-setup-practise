@@ -3,10 +3,11 @@
 
 - Create project:
 $ django-admin startproject <site_name>
-- Create/choose virtual environment following 3.a steps:
-- Check Django version.
-- Check project is created properly by running the server:
-$ python3 manage.py runserver
+- Create/choose virtual environment following steps from section 1:
+- Check Django version with the following command:
+`$ python3 -m django --version`
+- Check project is created properly by running the server (unapplied migrations are normal at this stage):
+`$ python3 manage.py runserver`
 - Select virtual environment in VS code's interpreter:
 https://stackoverflow.com/questions/53007637/e0401unable-to-import-django-db
 - Create app:
@@ -16,10 +17,11 @@ $ python3 manage.py startapp <app_name>
 where <AppNameConfig> is the class name in the <app_name> apps.py.
 - Check project is created properly by running the server:
 $ python3 manage.py runserver
-- Create models according to section 1.
-- Create super user for django admin:
-$ python3 manage.py createsuperuser
+- Migrate the DB for the first time according to section 3.
+- Create models according to section 2.
 - Register models in <app_name> admin.py to allow admin interface. 
+- Migrate the DB according to section 3.
+- Setup the django admin according to section 4.
 - Install and setup JWT according to section 5.
 - Create views according to section 3.
 - Declare url in app's URLconf
@@ -28,62 +30,8 @@ $ python3 manage.py createsuperuser
 $ python3 manage.py runserver
 - If error, check if the url in the browser matches a declared url in the root url.py
 
-# 1 Setup the database and create models
 
-## a Setup the database
-
-- In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
-- Indicate changes to models:
-$ python3 manage.py makemigrations
-- Run migrations:
-$ python3 manage.py sqlmigrate <app_name> <migration_number>
-- Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
-$ python3 manage.py migrate
-- Create fixtures according to step 1.d
-<!-- - Enter the following command to populate the database:
-$ python3 manage.py loaddata <fixture_file_name.extension> -->
-- Create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
-https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
-$ python3 manage.py <new_command_file_name_no_extension>
-
-## b Create models
-
-- Create models
-- Pay attention to each model's class name
-- For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
-- Do not forget to declare any on delete cascade for children model fields in parent models.
-- Modify the settings.py 'AUTH_USER_MODEL' with the proper user group name:
-AUTH_USER_MODEL = '<app_name>.<customized_user_model_name>
-- Create migrations for the changes once all the models are created:
-$ python3 manage.py makemigrations <app_name>
-- Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
-'<app_name>.app.<app_class_name>'
-- Check the SQL a specific migration would make:
-$ python3 manage.py sqlmigrate <app_name> <migration_number>
-- If it looks correct then run this command to apply all missing migrations, all changes, in the DB:
-$ python3 manage.py migrate
-This command is to be used when models are modified without losing data
-
-## c If using Django's auth user model
-- Don't forget to declare your User model in the settings as:
-$ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
-
-## d Creating fixtures
-- Create the corresponding folder and file:
-<site_name>/<app_name>/fixtures/database.json
-- Can create separate fixture files to make modifications easier to handle at:
-<site_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
-# 2 Setup the Django admin system
-- Create a super user:
-$ python3 manage.py createsuperuser
-- Access to Django's admin panel by entering the following URL in the browser:
-<domain>/admin/
-- Register model objects to tell the admin it has an admin interface. File to update:
-<app_name>/admin.py
-
-# 3 Create the views (controllers) and the serializers (views/templates)
-
-## a Prerequesite setup
+# 1 Create and use a virtual environment
 
 - Use a virtual environment to make sure that the package configuration is kept nicely isolated from any other projects.
 Sources:
@@ -103,7 +51,67 @@ $ deactivate
 $ pip3 install Django
 - Install Django Rest Framework in the virtual environment:
 $ pip3 install djangorestframework
-- Add the rest_framework app to INSTALLED_APPS in the <app_name>/settings.py file.
+- Add the 'rest_framework' app to INSTALLED_APPS in the <app_name>/settings.py file.
+
+# 2 Create models
+
+## a Default process
+
+- Create models
+- Pay attention to each model's class name
+- For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
+- Do not forget to declare any on delete cascade for children model fields in parent models.
+- Modify the settings.py 'AUTH_USER_MODEL' with the proper user group name:
+AUTH_USER_MODEL = '<app_name>.<customized_user_model_name>
+- Create migrations for the changes once all the models are created:
+$ python3 manage.py makemigrations <app_name>
+- Include app in the project settings.py, INSTALLED_APPS param. Path looks like:
+'<app_name>.app.<app_class_name>'
+- Check the SQL a specific migration would make:
+$ python3 manage.py sqlmigrate <app_name> <migration_number>
+- If it looks correct then run this command to apply all missing migrations, all changes, in the DB:
+$ python3 manage.py migrate
+This command is to be used when models are modified without losing data
+
+## b If using Django's auth user model
+- Don't forget to declare your User model in the settings as:
+$ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
+
+## c Creating fixtures
+- Create the corresponding folder and file:
+<site_name>/<app_name>/fixtures/database.json
+- Can create separate fixture files to make modifications easier to handle at:
+<site_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
+
+
+# 3 Migrate the database
+
+- In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
+- Indicate changes to models:
+$ python3 manage.py makemigrations
+- Run migrations:
+$ python3 manage.py sqlmigrate <app_name> <migration_number>
+- Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
+$ python3 manage.py migrate
+- Create fixtures according to step 1.d
+- If fixtures don't need to hash any user password, enter the following command to populate the database:
+$ python3 manage.py loaddata <fixture_file_name.extension>
+- If fixtures don't need to hash any user password, create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
+https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
+$ python3 manage.py <new_command_file_name_no_extension>
+
+
+# 4 Setup the Django admin system
+- Create a super user:
+$ python3 manage.py createsuperuser
+- Access to Django's admin panel by entering the following URL in the browser:
+<domain>/admin/
+- Register model objects to tell the admin it has an admin interface. File to update:
+<app_name>/admin.py
+
+# 3 Create the views (controllers) and the serializers (views/templates)
+
+
 
 ## b Create views
 - If views are split in multiple files:
@@ -133,10 +141,6 @@ unique constraint issues, trying to create objects with id numbers that already 
 
 #TODO
 - Complete creating serializers and views (test creating nested objects in same request)
-- Setup the user model with Django's authentication.
-- Setup the Django Rest framework JWT authentication.
-- Create unit tests.
-- Create permissions based on user access and HTTP request type (GET, POST etc.).
 - Create proper DB with either PostgreSQL or MySQL according to Django's documentation.
 - Create a server to host this project (nginx?) or host on Heroku for practise.
 - Setup Docker.
@@ -194,6 +198,12 @@ $ django-admin compilemessages --ignore=env
 $ pip3 install coverage
 - Run tests at level 2 with following command:
 coverage run manage.py test <app_name> -v 2
+- Remove the default tests.py file located at <project_name>/<main_app_name>/tests.py
+- Create a 'tests' forlder at:
+<app_name>/tests
+- Don't forget to create the '__init__.py' file in this folder and subfolders.
+- 1 test file <----> 1 test class <----> 1 setUp method.
+Cannot have multiple classes each with their own 'setUp' method in the same folder
 
 # 8 Setup Docker
 - Get the list of packages for the application and save them in a 'requirements.txt' file:
