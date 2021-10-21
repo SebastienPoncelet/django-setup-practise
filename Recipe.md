@@ -21,6 +21,7 @@ where <AppNameConfig> is the class name in the <app_name> apps.py.
 - Create models according to section 2.
 - Register models in <app_name> admin.py to allow admin interface.
 - Migrate the DB according to section 3.
+- Make unit tests for models according to section 6.
 - Setup the django admin according to section 4.
 - Install and setup JWT according to section 5.
 - Create views according to section 3.
@@ -81,9 +82,20 @@ $ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
 <project_name>/<app_name>/fixtures/database.json
 - Can create separate fixture files to make modifications easier to handle at:
 <project_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
+- If fixtures don't need to hash any user password, enter the following command to populate the database:
+$ python3 manage.py loaddata <fixture_file_name.extension>
+- If fixtures need to hash users password, see section 2.d
+
+## d Create command file to hash fixtures' users passwords
+
+- Create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
+https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
+$ python3 manage.py <new_command_file_name_no_extension>
 
 
 # 3 Migrate the database
+
+## a Base steps
 
 - In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
 - Indicate changes to models:
@@ -93,12 +105,8 @@ $ python3 manage.py sqlmigrate <app_name> <migration_number>
 - Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
 $ python3 manage.py migrate
 - Create fixtures according to step 1.d
-- If fixtures don't need to hash any user password, enter the following command to populate the database:
-$ python3 manage.py loaddata <fixture_file_name.extension>
-- If fixtures don't need to hash any user password, create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
-https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
-$ python3 manage.py <new_command_file_name_no_extension>
 
+## b If user password hash is required
 
 # 4 Setup the Django admin system
 - Create a super user:
@@ -158,7 +166,7 @@ $ pip3 install djangorestframework-simplejwt
 }
 ```
 
-# 6 Multi Language
+# 7 Multi Language
 - Check that the following has been installed (takes quite some time):
 $ brew install gettext
 $ brew link --force gettext
@@ -192,7 +200,7 @@ $ django-admin makemessages --all --ignore=env
 $ django-admin compilemessages --ignore=env
 - Before running 
 
-# 7 Unit test
+# 6 Unit test
 - Install coverage with following command:
 $ pip3 install coverage
 - Run tests at level 2 with following command:
@@ -201,6 +209,7 @@ coverage run manage.py test <app_name> -v 2
 - Create a 'tests' forlder at:
 <app_name>/tests
 - Don't forget to create the '__init__.py' file in this folder and subfolders.
+- Import all test files and folders in the '__init.py__' files.
 - 1 test file <----> 1 test class <----> 1 setUp method.
 Cannot have multiple classes each with their own 'setUp' method in the same folder
 
