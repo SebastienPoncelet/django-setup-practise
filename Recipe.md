@@ -31,7 +31,7 @@ where <AppNameConfig> is the class name in the '<app_name>/apps.py.'
 - If error, check if the url in the browser matches a declared url in the root url.py
 
 
-# 1 Create and use a virtual environment
+# 1 - Create and use a virtual environment
 
 - Use a virtual environment to make sure that the package configuration is kept nicely isolated from any other projects.
 Sources:
@@ -53,9 +53,9 @@ example:
 `$ pip3 install djangorestframework`
 - Add the 'rest_framework' app to INSTALLED_APPS in the '<app_name>/settings.py' file.
 
-# 2 Create models
+# 2 - Create models
 
-## a Default process
+## a - Default process
 
 - Create models
 - Pay attention to each model's class name
@@ -72,11 +72,11 @@ example:
 This command is to be used when models are modified without losing data
 - If fixtures are required to help populate the DB, see section 2.c.
 
-## b If using custom User model
+## b - If using custom User model
 - modify the settings.py 'AUTH_USER_MODEL' with the proper user group name::
 'AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>''
 
-## c Creating fixtures
+## c - Creating fixtures
 - Create the corresponding folder and file:
 '<project_name>/<app_name>/fixtures/database.json''=
 - Can create separate fixture files to make modifications easier to handle at:
@@ -85,14 +85,14 @@ This command is to be used when models are modified without losing data
 `$ python3 manage.py loaddata <fixture_file_name.extension>`
 - If fixtures need to hash users password, see section 2.d
 
-## d Create command file to hash fixtures' users passwords
+## d - Create command file to hash fixtures' users passwords
 
 - Create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
 https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
 `$ python3 manage.py <new_command_file_name_no_extension>`
 
 
-# 3 Migrate the database
+# 3 - Migrate the database
 
 - In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
 - Indicate changes to models:
@@ -104,7 +104,7 @@ https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
 - Create fixtures according to step 2.c
 
 
-# 4 Setup the Django admin system
+# 4 - Setup the Django admin system
 - Create a super user:
 `$ python3 manage.py createsuperuser`
 - Access to Django's admin panel by entering the following URL in the browser:
@@ -112,7 +112,7 @@ https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
 - Register model objects to tell the admin it has an admin interface. File to update:
 '<app_name>/admin.py'
 
-# 5 Authentication Token
+# 5 - Authentication Token
 - Can use djangorestframework-simplejwt librairy as it's popular and regularly updated:
 https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
 https://github.com/jazzband/djangorestframework-simplejwt
@@ -128,26 +128,26 @@ REST_FRAMEWORK = {
 ```
 
 
-# 6 Create the views (controllers) and the serializers (views/templates)
+# 6 - Create the views (controllers) and the serializers (views/templates)
 
-## a Create views
+## a - Create views
 - If views are split in multiple files:
     - Create a <views> folder.
     - Create 1 view file per view.
     - Import all view files in '<site_name>/<app_name>/views/__init__.py'
 - If using class based views and ViewSets, 1 view <--> 1 model.
 
-## b Create serializers
+## b - Create serializers
 - Use ModelSerializer to keep the code concise.
 - If using class based views and ViewSets:
     - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
     - 1 url <--> 1 ViewSets for all CRUD endpoints.
 
-## c Setup the corresponding urls
+## c - Setup the corresponding urls
 - Register a view in the '<site_name>/<app_name>/urls.py'
 
 
-# 7 Unit test
+# 7 - Unit test
 - Install coverage with following command:
 `$ pip3 install coverage`
 - Run tests at level 2 with following command:
@@ -161,7 +161,7 @@ REST_FRAMEWORK = {
 Cannot have multiple classes each with their own 'setUp' method in the same folder
 
 
-# 8 Multi Language
+# 8 - Multi Language
 - Check that the following has been installed (takes quite some time):
 `$ brew install gettext`
 `$ brew link --force gettext`
@@ -202,7 +202,7 @@ etc.
 - Before running
 
 
-# 9 Setup Docker
+# 9 - Setup Docker
 - Get the list of packages for the application and save them in a 'requirements.txt' file:
 `$ pip3 freeze > requirements.txt`
 - Create Dockerfile in project's root.
@@ -215,7 +215,7 @@ etc.
 `$ docker run --publish 8000:8000 python-django-test`
 
 
-# 10 Typical errors
+# 10 - Typical errors
 -  'Indentation Error: unindent does not match any outer indentation level'
 --> there's a mix of tabs and spaces somewhere in the file.
 - Create the __str__() model instance method to help identify entities more easily.
@@ -223,7 +223,7 @@ etc.
 unique constraint issues, trying to create objects with id numbers that already exist.
 
 
-# 11 TODO list to continue improving the document
+# 11 - TODO list to continue improving the document
 - Complete creating serializers and views (test creating nested objects in same request)
 - Create proper DB with either PostgreSQL or MySQL according to Django's documentation.
 - Create a server to host this project (nginx?) or host on Heroku for practise.
