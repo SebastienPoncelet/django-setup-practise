@@ -2,7 +2,7 @@
 # Setup Django and project
 
 - Create project:
-$ django-admin startproject <site_name>
+`$ django-admin startproject <site_name>`
 - Create/choose virtual environment following steps from section 1:
 - Check Django version with the following command:
 `$ python3 -m django --version`
@@ -19,7 +19,7 @@ where <AppNameConfig> is the class name in the <app_name> apps.py.
 `$ python3 manage.py runserver`
 - Migrate the DB for the first time according to section 3.
 - Create models according to section 2.
-- Register models in <app_name> admin.py to allow admin interface.
+- Register models in '<app_name>/admin.py' to allow admin interface.
 - Migrate the DB according to section 3.
 - Make unit tests for models according to section 6.
 - Setup the django admin according to section 4.
@@ -52,7 +52,7 @@ example:
 `$ pip3 install Django`
 - Install Django Rest Framework in the virtual environment:
 `$ pip3 install djangorestframework`
-- Add the 'rest_framework' app to INSTALLED_APPS in the <app_name>/settings.py file.
+- Add the 'rest_framework' app to INSTALLED_APPS in the '<app_name>/settings.py' file.
 
 # 2 Create models
 
@@ -62,8 +62,7 @@ example:
 - Pay attention to each model's class name
 - For a ForeignKey field, the related name is the current class' name. Name the parent will see its child/children
 - Do not forget to declare any on delete cascade for children model fields in parent models.
-- If a custom User model is created, modify the settings.py 'AUTH_USER_MODEL' with the proper user group name:
-AUTH_USER_MODEL = '<app_name>.<customized_user_model_name>
+- If a custom User model is created, see section 2.b.
 - Import all model files in the 'models/__init.py__' file.
 - Create migrations for the changes once all the models are created:
 `$ python3 manage.py makemigrations <app_name>`
@@ -72,25 +71,26 @@ AUTH_USER_MODEL = '<app_name>.<customized_user_model_name>
 - If it looks correct then run this command to apply all missing migrations, all changes, in the DB:
 `$ python3 manage.py migrate`
 This command is to be used when models are modified without losing data
+- If fixtures are required to help populate the DB, see section 2.c.
 
 ## b If using custom User model
-- Don't forget to declare your User model in the settings as:
-$ AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>'
+- modify the settings.py 'AUTH_USER_MODEL' with the proper user group name::
+'AUTH_USER_MODEL = '<app_nam>.<user_model_class_name>''
 
 ## c Creating fixtures
 - Create the corresponding folder and file:
-<project_name>/<app_name>/fixtures/database.json
+'<project_name>/<app_name>/fixtures/database.json''=
 - Can create separate fixture files to make modifications easier to handle at:
-<project_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json
+'<project_name>/<app_name>/fixtures/separated_fixtures/<model_name_plural>.json'
 - If fixtures don't need to hash any user password, enter the following command to populate the database:
-$ python3 manage.py loaddata <fixture_file_name.extension>
+`$ python3 manage.py loaddata <fixture_file_name.extension>`
 - If fixtures need to hash users password, see section 2.d
 
 ## d Create command file to hash fixtures' users passwords
 
 - Create a custom command to hash user passwords in the DB when loading the fixtures by following this post:
 https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
-$ python3 manage.py <new_command_file_name_no_extension>
+`$ python3 manage.py <new_command_file_name_no_extension>`
 
 
 # 3 Migrate the database
@@ -99,32 +99,31 @@ $ python3 manage.py <new_command_file_name_no_extension>
 
 - In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
 - Indicate changes to models:
-$ python3 manage.py makemigrations
+`$ python3 manage.py makemigrations <app_name>`
 - Run migrations:
-$ python3 manage.py sqlmigrate <app_name> <migration_number>
+`$ python3 manage.py sqlmigrate <app_name> <migration_number>`
 - Run migrations for the apps in the project settings.py, INSTALLED_APPS param:
-$ python3 manage.py migrate
-- Create fixtures according to step 1.d
+`$ python3 manage.py migrate`
+- Create fixtures according to step 2.c
 
 ## b If user password hash is required
 
 # 4 Setup the Django admin system
 - Create a super user:
-$ python3 manage.py createsuperuser
+`$ python3 manage.py createsuperuser`
 - Access to Django's admin panel by entering the following URL in the browser:
-<domain>/admin/
+'<domain>/admin/'
 - Register model objects to tell the admin it has an admin interface. File to update:
-<app_name>/admin.py
+'<app_name>/admin.py'
+
 
 # 3 Create the views (controllers) and the serializers (views/templates)
-
-
 
 ## b Create views
 - If views are split in multiple files:
     - Create a <views> folder.
     - Create 1 view file per view.
-    - Import all view files in <site_name>/<app_name>/views/__init__.py
+    - Import all view files in '<site_name>/<app_name>/views/__init__.py'
 - If using class based views and ViewSets, 1 view <--> 1 model.
 
 ## c Create serializers
@@ -135,7 +134,7 @@ $ python3 manage.py createsuperuser
 
 
 ## d Setup the corresponding urls
-- Register a view in the <site_name>/<app_name>/urls.py
+- Register a view in the '<site_name>/<app_name>/urls.py'
 
 
 # 4 Typical errors
@@ -157,57 +156,64 @@ unique constraint issues, trying to create objects with id numbers that already 
 https://django-rest-framework-simplejwt.readthedocs.io/en/latest/getting_started.html
 https://github.com/jazzband/djangorestframework-simplejwt
 - Install in virtual environment:
-$ pip3 install djangorestframework-simplejwt
+`$ pip3 install djangorestframework-simplejwt`
 - Add this librairy in the settings.py file by adding this whole section:
-```REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+```python
+REST_FRAMEWORK = {
+  'DEFAULT_AUTHENTICATION_CLASSES': (
+      'rest_framework_simplejwt.authentication.JWTAuthentication',
+  ),
 }
 ```
 
 # 7 Multi Language
 - Check that the following has been installed (takes quite some time):
-$ brew install gettext
-$ brew link --force gettext
+`$ brew install gettext`
+`$ brew link --force gettext`
 - In settings.py modify the 'LANGUAGE_CODE' to a generic one like 'en'.
 - Import 'gettext_lazy' in settings.py like this:
 from django.utils.translation import gettext_lazy as _
 - If only a few supported languages are required, then specify them in the settings.py as follows,
 otherwise all supported languages will be imported by Django:
+```python
 LANGUAGES = (
     ('en', _('English')),
     ('<language_code>', _('<language_name>'))
 )
+```
 - In settings.py 'MIDDLEWARE' add the corresponding middlewar in this order to user session data and
 resolve the requested URL with the active language:
+```python
 MIDDLEWARE = [
-'django.contrib.sessions.middleware.SessionMiddleware',
-'django.middleware.locale.LocaleMiddleware', # new
-'django.middleware.common.CommonMiddleware',
+  'django.contrib.sessions.middleware.SessionMiddleware',
+  'django.middleware.locale.LocaleMiddleware', # new
+  'django.middleware.common.CommonMiddleware',
 ]
+```
 - In settings.py define the path for locale files, at the project's root (using name 'locale' can be problematic):
+```python
 LOCALE_PATHS = [
-    BASE_DIR / 'locale/',
+  BASE_DIR / 'locale/',
 ]
+```
 - Create the following folders at the 'LOCAL_PATHS' corresponding path (using name 'locale' can be problematic):
-<project_root>/locale/<language_code_1>
-<project_root>/locale/<language_code_2>
+'<project_root>/locale/<language_code_1>'
+'<project_root>/locale/<language_code_2>'
 etc.
 - Create a .po message file for each language
-$ django-admin makemessages --all --ignore=env
+`$ django-admin makemessages --all --ignore=env`
 - Once translations have been provided in the .po files, compile with the following command:
-$ django-admin compilemessages --ignore=env
-- Before running 
+`$ django-admin compilemessages --ignore=env`
+- Before running
 
 # 6 Unit test
 - Install coverage with following command:
-$ pip3 install coverage
+`$ pip3 install coverage`
 - Run tests at level 2 with following command:
-coverage run manage.py test <app_name> -v 2
-- Remove the default tests.py file located at <project_name>/<main_app_name>/tests.py
+`$ coverage run manage.py test <app_name> -v 2`
+- Remove the default tests.py file located at '<project_name>/<main_app_name>/tests.py'
 - Create a 'tests' forlder at:
-<app_name>/tests
+'<app_name>/tests'
 - Don't forget to create the '__init__.py' file in this folder and subfolders.
 - Import all test files and folders in the '__init.py__' files.
 - 1 test file <----> 1 test class <----> 1 setUp method.
@@ -215,12 +221,12 @@ Cannot have multiple classes each with their own 'setUp' method in the same fold
 
 # 8 Setup Docker
 - Get the list of packages for the application and save them in a 'requirements.txt' file:
-$ pip3 freeze > requirements.txt
+`$ pip3 freeze > requirements.txt`
 - Create Dockerfile in project's root.
 - Build image to download required packages with command:
-$ docker build --tag <image_wished_name> <directory_to_build>
-$ docker build --tag python-django-test .
+`$ docker build --tag <image_wished_name> <directory_to_build>`
+`$ docker build --tag python-django-test .`
 '.' designs the current directory
 - Run the image and publish, link local and container ports, with command:
-$ docker run --publish <local_port>:<container_port_from_Dockerfile> <tag_name_if_any>
-$ docker run --publish 8000:8000 python-django-test
+`$ docker run --publish <local_port>:<container_port_from_Dockerfile> <tag_name_if_any>`
+`$ docker run --publish 8000:8000 python-django-test`
