@@ -14,19 +14,18 @@ https://stackoverflow.com/questions/53007637/e0401unable-to-import-django-db
 `$ python3 manage.py startapp <app_name>`
 - Add app to project's settings.py 'INSTALLED_APPS' array.
 '<app_name>.apps.<AppNameConfig>'
-where <AppNameConfig> is the class name in the <app_name> apps.py.
+where <AppNameConfig> is the class name in the '<app_name>/apps.py.'
 - Check project is created properly by running the server:
 `$ python3 manage.py runserver`
 - Migrate the DB for the first time according to section 3.
 - Create models according to section 2.
 - Register models in '<app_name>/admin.py' to allow admin interface.
 - Migrate the DB according to section 3.
-- Make unit tests for models according to section 6.
+- Make unit tests for models according to section 7.
 - Setup the django admin according to section 4.
 - Install and setup JWT according to section 5.
-- Create views according to section 3.
-- Declare url in app's URLconf
-- Import URLconf in root urls.py
+- Create views according to section 6.
+- Make unit tests for models according to section 7.
 - Check if there are any issues by running the server:
 `$ python3 manage.py runserver`
 - If error, check if the url in the browser matches a declared url in the root url.py
@@ -95,8 +94,6 @@ https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
 
 # 3 Migrate the database
 
-## a Base steps
-
 - In the project's settings.py, adjust the DATABASES.default values according to chosen database setup.
 - Indicate changes to models:
 `$ python3 manage.py makemigrations <app_name>`
@@ -106,7 +103,6 @@ https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
 `$ python3 manage.py migrate`
 - Create fixtures according to step 2.c
 
-## b If user password hash is required
 
 # 4 Setup the Django admin system
 - Create a super user:
@@ -115,41 +111,6 @@ https://stackoverflow.com/questions/8017204/users-in-initial-data-fixture
 '<domain>/admin/'
 - Register model objects to tell the admin it has an admin interface. File to update:
 '<app_name>/admin.py'
-
-
-# 3 Create the views (controllers) and the serializers (views/templates)
-
-## b Create views
-- If views are split in multiple files:
-    - Create a <views> folder.
-    - Create 1 view file per view.
-    - Import all view files in '<site_name>/<app_name>/views/__init__.py'
-- If using class based views and ViewSets, 1 view <--> 1 model.
-
-## c Create serializers
-- Use ModelSerializer to keep the code concise.
-- If using class based views and ViewSets:
-    - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
-    - 1 url <--> 1 ViewSets for all CRUD endpoints.
-
-
-## d Setup the corresponding urls
-- Register a view in the '<site_name>/<app_name>/urls.py'
-
-
-# 4 Typical errors
--  'Indentation Error: unindent does not match any outer indentation level'
---> there's a mix of tabs and spaces somewhere in the file.
-- Create the __str__() model instance method to help identify entities more easily.
-- If the fixtures have been changed, then delete the local database or loading the fixtures will create
-unique constraint issues, trying to create objects with id numbers that already exist.
-
-
-#TODO
-- Complete creating serializers and views (test creating nested objects in same request)
-- Create proper DB with either PostgreSQL or MySQL according to Django's documentation.
-- Create a server to host this project (nginx?) or host on Heroku for practise.
-- Setup Docker.
 
 # 5 Authentication Token
 - Can use djangorestframework-simplejwt librairy as it's popular and regularly updated:
@@ -161,12 +122,46 @@ https://github.com/jazzband/djangorestframework-simplejwt
 ```python
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
-      'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
   ),
 }
 ```
 
-# 7 Multi Language
+
+# 6 Create the views (controllers) and the serializers (views/templates)
+
+## a Create views
+- If views are split in multiple files:
+    - Create a <views> folder.
+    - Create 1 view file per view.
+    - Import all view files in '<site_name>/<app_name>/views/__init__.py'
+- If using class based views and ViewSets, 1 view <--> 1 model.
+
+## b Create serializers
+- Use ModelSerializer to keep the code concise.
+- If using class based views and ViewSets:
+    - 1 ViewSets <--> 1 ModelSerializer for all CRUD actions.
+    - 1 url <--> 1 ViewSets for all CRUD endpoints.
+
+## c Setup the corresponding urls
+- Register a view in the '<site_name>/<app_name>/urls.py'
+
+
+# 7 Unit test
+- Install coverage with following command:
+`$ pip3 install coverage`
+- Run tests at level 2 with following command:
+`$ coverage run manage.py test <app_name> -v 2`
+- Remove the default tests.py file located at '<project_name>/<main_app_name>/tests.py'
+- Create a 'tests' forlder at:
+'<app_name>/tests'
+- Don't forget to create the '__init__.py' file in this folder and subfolders.
+- Import all test files and folders in the '__init.py__' files.
+- 1 test file <----> 1 test class <----> 1 setUp method.
+Cannot have multiple classes each with their own 'setUp' method in the same folder
+
+
+# 8 Multi Language
 - Check that the following has been installed (takes quite some time):
 `$ brew install gettext`
 `$ brew link --force gettext`
@@ -206,20 +201,8 @@ etc.
 `$ django-admin compilemessages --ignore=env`
 - Before running
 
-# 6 Unit test
-- Install coverage with following command:
-`$ pip3 install coverage`
-- Run tests at level 2 with following command:
-`$ coverage run manage.py test <app_name> -v 2`
-- Remove the default tests.py file located at '<project_name>/<main_app_name>/tests.py'
-- Create a 'tests' forlder at:
-'<app_name>/tests'
-- Don't forget to create the '__init__.py' file in this folder and subfolders.
-- Import all test files and folders in the '__init.py__' files.
-- 1 test file <----> 1 test class <----> 1 setUp method.
-Cannot have multiple classes each with their own 'setUp' method in the same folder
 
-# 8 Setup Docker
+# 9 Setup Docker
 - Get the list of packages for the application and save them in a 'requirements.txt' file:
 `$ pip3 freeze > requirements.txt`
 - Create Dockerfile in project's root.
@@ -230,3 +213,18 @@ Cannot have multiple classes each with their own 'setUp' method in the same fold
 - Run the image and publish, link local and container ports, with command:
 `$ docker run --publish <local_port>:<container_port_from_Dockerfile> <tag_name_if_any>`
 `$ docker run --publish 8000:8000 python-django-test`
+
+
+# 10 Typical errors
+-  'Indentation Error: unindent does not match any outer indentation level'
+--> there's a mix of tabs and spaces somewhere in the file.
+- Create the __str__() model instance method to help identify entities more easily.
+- If the fixtures have been changed, then delete the local database or loading the fixtures will create
+unique constraint issues, trying to create objects with id numbers that already exist.
+
+
+# 11 TODO list to continue improving the document
+- Complete creating serializers and views (test creating nested objects in same request)
+- Create proper DB with either PostgreSQL or MySQL according to Django's documentation.
+- Create a server to host this project (nginx?) or host on Heroku for practise.
+- Setup Docker.
